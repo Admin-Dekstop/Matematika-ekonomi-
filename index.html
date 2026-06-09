@@ -1,0 +1,1856 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi UAS UT - Matematika Ekonomi ESPA4122</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Plus Jakarta Sans) -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        /* Custom scrollbar for question grid */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #6366f1;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 bg-slate-800/90 border-b border-slate-700/80 backdrop-blur-md px-4 py-3 shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-gradient-to-tr from-indigo-500 to-violet-600 p-2.5 rounded-xl shadow-md shadow-indigo-500/15">
+                    <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-indigo-200 leading-tight">
+                        Simulasi UAS Universitas Terbuka
+                    </h1>
+                    <p class="text-xs text-slate-400 font-semibold tracking-wide uppercase">
+                        Matematika Ekonomi (ESPA4122)
+                    </p>
+                </div>
+            </div>
+
+            <!-- Timer & Progress Bar (Akan aktif ketika tes dimulai) -->
+            <div id="quiz-status-bar" class="hidden flex items-center gap-4 bg-slate-900/80 border border-slate-700 px-4 py-2 rounded-2xl shadow-inner">
+                <div class="flex items-center gap-2">
+                    <svg class="h-4 w-4 text-indigo-400" id="timer-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span id="timer-display" class="font-mono text-sm font-bold tracking-wider text-slate-200">90:00</span>
+                </div>
+                <div class="h-4 w-px bg-slate-700"></div>
+                <div class="text-xs text-slate-300 font-medium">
+                    Terjawab: <span id="answered-count" class="font-semibold text-indigo-400">0</span>/100
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- LANDING VIEW -->
+    <main id="landing-view" class="flex-1 max-w-4xl mx-auto px-4 py-10 sm:py-16">
+        <div class="text-center mb-12 animate-fade-in">
+            <span class="px-4 py-1.5 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-semibold tracking-widest uppercase border border-indigo-500/20 mb-4 inline-block">
+                Edisi Sukses UAS UT Semester Ini
+            </span>
+            <h2 class="text-3xl sm:text-5xl font-black text-white leading-tight tracking-tight mb-4">
+                Simulator Ujian Mandiri <br />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400">
+                    Matematika Ekonomi
+                </span>
+            </h2>
+            <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+                Aplikasi interaktif yang dirancang khusus untuk melatih analisis, menghitung persamaan, dan menguasai konsep penting dari Modul 1 sampai Modul 9 Matematika Ekonomi UT.
+            </p>
+        </div>
+
+        <!-- Rangkuman Materi Modul -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-slate-800/50 border border-slate-700/80 p-6 rounded-3xl relative overflow-hidden group hover:border-slate-600 transition-all duration-300">
+                <div class="text-indigo-400 mb-4 font-bold text-xs uppercase tracking-wider">Modul 1 - 3</div>
+                <h3 class="text-base font-bold text-white mb-2">Himpunan, Deret & Bunga</h3>
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    Menguasai operasi komplemen himpunan, barisan aritmetika/geometri, perhitungan bunga majemuk, dan nilai waktu dari uang (PV/FV).
+                </p>
+            </div>
+            <div class="bg-slate-800/50 border border-slate-700/80 p-6 rounded-3xl relative overflow-hidden group hover:border-slate-600 transition-all duration-300">
+                <div class="text-violet-400 mb-4 font-bold text-xs uppercase tracking-wider">Modul 4 - 6</div>
+                <h3 class="text-base font-bold text-white mb-2">Keseimbangan & Konsumsi</h3>
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    Perhitungan keseimbangan pasar Qd=Qs dengan pengaruh pajak proporsional/spesifik, subsidi pemerintah, fungsi konsumsi Keynes, dan optimasi kepuasan.
+                </p>
+            </div>
+            <div class="bg-slate-800/50 border border-slate-700/80 p-6 rounded-3xl relative overflow-hidden group hover:border-slate-600 transition-all duration-300">
+                <div class="text-purple-400 mb-4 font-bold text-xs uppercase tracking-wider">Modul 7 - 9</div>
+                <h3 class="text-base font-bold text-white mb-2">Kalkulus & Laba Monopoli</h3>
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    Penerapan konsep limit kontinuitas, turunan pertama marginal cost (MC), marginal revenue (MR), pemaksimalan laba produsen (MR=MC).
+                </p>
+            </div>
+        </div>
+
+        <!-- Pengaturan Pengguna -->
+        <div class="bg-slate-800 border border-slate-700 p-6 sm:p-8 rounded-3xl shadow-2xl relative">
+            <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                <svg class="h-5 w-5 text-indigo-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                </svg>
+                Atur Mode & Durasi Simulasi Anda
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <!-- Durasi Ujian -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 tracking-wider uppercase mb-3">
+                        Durasi Waktu Pengerjaan
+                    </label>
+                    <div class="grid grid-cols-4 gap-2">
+                        <button onclick="setDuration(60)" id="dur-60" class="dur-btn py-2.5 px-1 text-center rounded-xl font-bold text-xs bg-slate-900 border border-slate-750 text-slate-400 hover:bg-slate-850 transition-all">60 Menit</button>
+                        <button onclick="setDuration(90)" id="dur-90" class="dur-btn py-2.5 px-1 text-center rounded-xl font-bold text-xs bg-indigo-600 border border-indigo-500 text-white shadow-md shadow-indigo-500/10 transition-all">90 Menit</button>
+                        <button onclick="setDuration(120)" id="dur-120" class="dur-btn py-2.5 px-1 text-center rounded-xl font-bold text-xs bg-slate-900 border border-slate-750 text-slate-400 hover:bg-slate-850 transition-all">120 Menit</button>
+                        <button onclick="setDuration(0)" id="dur-0" class="dur-btn py-2.5 px-1 text-center rounded-xl font-bold text-xs bg-slate-900 border border-slate-750 text-slate-400 hover:bg-slate-850 transition-all">Bebas</button>
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-2 italic">
+                        *UT sesungguhnya menggunakan batas waktu ketat 90 menit.
+                    </p>
+                </div>
+
+                <!-- Mode Latihan vs Ujian -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 tracking-wider uppercase mb-3">
+                        Jenis Pembahasan Kunci Jawaban
+                    </label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="setMode('belajar')" id="mode-belajar" class="mode-btn p-3 text-left rounded-xl border bg-indigo-600/10 border-indigo-500 text-white transition-all">
+                            <div class="font-bold text-xs">Mode Latihan</div>
+                            <div class="text-[10px] text-slate-300 mt-1">
+                                Klik jawaban langsung memunculkan benar/salah & pembahasan rumus.
+                            </div>
+                        </button>
+                        <button onclick="setMode('ujian')" id="mode-ujian" class="mode-btn p-3 text-left rounded-xl border bg-slate-900 border-slate-750 text-slate-400 hover:bg-slate-850 transition-all">
+                            <div class="font-bold text-xs">Mode Ujian Resmi</div>
+                            <div class="text-[10px] text-slate-300 mt-1">
+                                Kunci dan ulasan rumus hanya terlihat di akhir setelah tombol kumpul ditekan.
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tombol Start -->
+            <div class="flex flex-col sm:flex-row items-center gap-4 pt-4 border-t border-slate-700">
+                <button onclick="startSimulation()" class="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-600 hover:to-violet-700 text-white px-8 py-3.5 rounded-2xl font-extrabold shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all flex items-center justify-center gap-2">
+                    Mulai Ujian Simulasi
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+                <div class="text-xs text-slate-400 text-center sm:text-left">
+                    Siapkan kertas cakar dan kalkulator. Soal disusun bertingkat dari teori hingga kasus matematis yang menantang!
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- KUIS WORKSPACE VIEW -->
+    <main id="quiz-view" class="hidden flex-1 max-w-7xl mx-auto px-4 py-6 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            
+            <!-- PANEL KIRI: SOAL DAN PILIHAN -->
+            <div class="lg:col-span-3 space-y-6">
+                <div class="bg-slate-800 border border-slate-700 rounded-3xl p-6 shadow-xl relative overflow-hidden">
+                    
+                    <!-- Progress Bar Indikator -->
+                    <div class="absolute top-0 left-0 w-full h-1 bg-slate-700">
+                        <div id="progress-indicator" class="h-full bg-gradient-to-r from-indigo-500 to-violet-600 transition-all duration-300" style="width: 1%"></div>
+                    </div>
+
+                    <!-- Detail Pertanyaan Header -->
+                    <div class="flex items-center justify-between gap-4 mb-6">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span id="question-index-tag" class="bg-indigo-500/10 text-indigo-400 text-xs px-3 py-1.5 rounded-full font-bold border border-indigo-500/20">
+                                Soal 1 dari 100
+                            </span>
+                            <span id="question-category-tag" class="text-xs text-slate-400 font-semibold tracking-wide">
+                                Modul 1: Himpunan
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="question-diff-tag" class="text-[10px] uppercase tracking-wider font-extrabold px-2 py-1 rounded-md bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                                Tinggi
+                            </span>
+                            <button onclick="toggleFlag()" id="flag-btn" class="p-1.5 rounded-lg border bg-slate-900 border-slate-750 text-slate-400 hover:text-slate-300 transition-all" title="Tandai ragu-ragu">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Soal -->
+                    <h3 id="question-text" class="text-base sm:text-lg font-bold leading-relaxed text-white mb-8">
+                        Memuat Pertanyaan...
+                    </h3>
+
+                    <!-- Pilihan Jawaban -->
+                    <div id="options-container" class="space-y-3 mb-8">
+                        <!-- Generasi dinamis via JS -->
+                    </div>
+
+                    <!-- Tombol Navigasi Bawah -->
+                    <div class="flex items-center justify-between pt-4 border-t border-slate-750 gap-4">
+                        <button onclick="prevQuestion()" id="prev-btn" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-850 border border-slate-750 text-slate-400 hover:text-slate-200 text-xs sm:text-sm rounded-xl font-bold flex items-center gap-1.5 disabled:opacity-35 disabled:cursor-not-allowed transition-all">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            Sebelumnya
+                        </button>
+
+                        <div class="hidden sm:flex text-xs text-slate-400 font-medium">
+                            Gunakan panel kanan untuk bernavigasi cepat ke nomor mana saja.
+                        </div>
+
+                        <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm rounded-xl font-bold flex items-center gap-1.5 transition-all">
+                            Berikutnya
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PEMBAHASAN INSTAN (Mode Belajar / Mode Review) -->
+                <div id="explanation-box" class="hidden bg-slate-800/80 border border-emerald-500/30 p-6 rounded-3xl shadow-xl space-y-3">
+                    <div class="flex items-center gap-2.5 pb-2 border-b border-slate-700">
+                        <div class="p-1.5 bg-emerald-500/10 rounded-lg text-emerald-400">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            </svg>
+                        </div>
+                        <div>
+                          <h4 class="text-sm font-extrabold text-white">Pembahasan & Penjelasan Rumus</h4>
+                          <p class="text-[10px] text-slate-400">Langkah penyelesaian sistematis</p>
+                        </div>
+                    </div>
+                    <p id="explanation-text" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        -
+                    </p>
+                </div>
+            </div>
+
+            <!-- PANEL KANAN: PANEL NAVIGASI NOMOR GRID -->
+            <div class="space-y-6">
+                <div class="bg-slate-800 border border-slate-700 rounded-3xl p-5 shadow-xl">
+                    <h4 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                        <svg class="h-4 w-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                        </svg>
+                        Indeks Lembar Jawaban
+                    </h4>
+
+                    <!-- Filter Kategori Grid -->
+                    <div class="grid grid-cols-3 gap-1 mb-4 bg-slate-900/60 p-1 rounded-xl text-center">
+                        <button onclick="setGridFilter('semua')" id="filter-semua" class="py-1 text-[10px] font-bold rounded-lg transition-all capitalize bg-slate-850 text-indigo-400 border border-slate-700/80 shadow">Semua</button>
+                        <button onclick="setGridFilter('belum')" id="filter-belum" class="py-1 text-[10px] font-bold rounded-lg transition-all capitalize text-slate-400 hover:text-slate-200">Belum</button>
+                        <button onclick="setGridFilter('ragu')" id="filter-ragu" class="py-1 text-[10px] font-bold rounded-lg transition-all capitalize text-slate-400 hover:text-slate-200">Ragu</button>
+                    </div>
+
+                    <!-- Nomor 1-100 Grid -->
+                    <div id="grid-container" class="grid grid-cols-5 gap-1.5 max-h-[340px] overflow-y-auto pr-1 custom-scrollbar">
+                        <!-- Generasi dinamis nomor 1 - 100 via JS -->
+                    </div>
+
+                    <!-- Deskripsi State Grid -->
+                    <div class="mt-5 pt-4 border-t border-slate-750 space-y-2">
+                        <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                            <span class="w-2.5 h-2.5 rounded bg-slate-900 border border-slate-750"></span>
+                            <span>Belum Diisi</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                            <span class="w-2.5 h-2.5 rounded bg-indigo-600/20 border border-indigo-500"></span>
+                            <span>Sudah Diisi</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                            <span class="w-2.5 h-2.5 rounded bg-amber-500/20 border border-amber-500"></span>
+                            <span>Ragu-ragu / Ditandai</span>
+                        </div>
+                    </div>
+
+                    <button onclick="showSubmitConfirmModal()" id="submit-exam-btn" class="w-full mt-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold rounded-2xl shadow-lg shadow-emerald-500/10 transition-all text-xs tracking-wider uppercase">
+                        Kirim Jawaban Akhir
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- HASIL DAN STATISTIK ANALISIS VIEW -->
+    <main id="result-view" class="hidden flex-1 max-w-4xl mx-auto px-4 py-10 w-full">
+        <div class="space-y-8">
+            <!-- Scoreboard utama -->
+            <div class="bg-slate-800 border border-slate-700 p-8 rounded-3xl shadow-2xl text-center relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-500 via-violet-500 to-emerald-500"></div>
+                
+                <div class="max-w-md mx-auto">
+                    <div class="w-24 h-24 rounded-full bg-slate-900 border-4 border-indigo-500/40 flex items-center justify-center mx-auto mb-4 relative shadow-inner">
+                        <svg class="h-10 w-10 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                        </svg>
+                        <div class="absolute -bottom-1 -right-1 bg-indigo-500 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full">UT</div>
+                    </div>
+
+                    <h2 class="text-2xl font-black text-white mb-1">Simulasi Berhasil Diselesaikan!</h2>
+                    <p class="text-[11px] text-slate-400 uppercase tracking-widest font-extrabold mb-4">Hasil Nilai Matematika Ekonomi ESPA4122</p>
+
+                    <!-- Angka Skor -->
+                    <div id="final-score" class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-200 to-indigo-400 mb-2">
+                        85%
+                    </div>
+
+                    <!-- Kelulusan Badge -->
+                    <div class="mb-6">
+                        <span id="pass-fail-badge" class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-4 py-1.5 rounded-full font-bold inline-block">
+                            LULUS (GRADE UT: A)
+                        </span>
+                    </div>
+
+                    <!-- Ringkasan jawaban -->
+                    <div class="grid grid-cols-3 gap-3 bg-slate-900 p-4 rounded-2xl border border-slate-750 mb-6 text-center">
+                        <div>
+                            <div class="text-[10px] text-slate-400 uppercase font-bold">Benar</div>
+                            <div id="summary-correct" class="text-base font-black text-emerald-400">0</div>
+                        </div>
+                        <div>
+                            <div class="text-[10px] text-slate-400 uppercase font-bold">Salah</div>
+                            <div id="summary-incorrect" class="text-base font-black text-rose-400">0</div>
+                        </div>
+                        <div>
+                            <div class="text-[10px] text-slate-400 uppercase font-bold">Kosong</div>
+                            <div id="summary-unanswered" class="text-base font-black text-slate-400">0</div>
+                        </div>
+                    </div>
+
+                    <!-- Opsi Aksi Akhir -->
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                        <button onclick="startReview()" class="py-2.5 px-6 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-indigo-500/10 transition-all">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            Tinjau Jawaban & Pembahasan
+                        </button>
+                        <button onclick="restartSimulation()" class="py-2.5 px-6 bg-slate-900 hover:bg-slate-850 border border-slate-750 text-slate-300 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18.2" />
+                            </svg>
+                            Ujian Ulang Baru
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analisis per Modul UT -->
+            <div class="bg-slate-800 border border-slate-700 p-6 sm:p-8 rounded-3xl shadow-xl">
+                <h3 class="text-base font-extrabold text-white mb-6 flex items-center gap-2">
+                    <svg class="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.003 9.003 0 1020.945 13H11V3.055z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                    </svg>
+                    Kesiapan Penguasaan Materi per Modul UT
+                </h3>
+                <div id="category-analysis-container" class="space-y-4">
+                    <!-- Generasi dinamis grafik penguasaan materi -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950/60 border-t border-slate-800/80 py-6 text-center text-xs text-slate-500 mt-auto px-4">
+        <p>© 2026 Universitas Terbuka Independent Study Helper. Dibuat khusus untuk persiapan ujian akhir semester ESPA4122.</p>
+    </footer>
+
+    <!-- CONFIRMATION SUBMIT MODAL -->
+    <div id="confirm-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+        <div class="bg-slate-800 border border-slate-700 p-6 rounded-3xl max-w-sm w-full shadow-2xl relative">
+            <div class="p-3 bg-indigo-500/10 rounded-full w-12 h-12 flex items-center justify-center mb-4 text-indigo-400 mx-auto sm:mx-0">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2 text-center sm:text-left">Kirim Lembar Jawaban?</h3>
+            <p class="text-slate-400 text-xs leading-relaxed mb-6 text-center sm:text-left">
+                Apakah Anda sudah yakin ingin menyelesaikan seluruh proses kuis dan mengirimkan jawaban untuk dikalkulasi secara otomatis?
+            </p>
+            <div class="flex gap-3">
+                <button onclick="closeSubmitConfirmModal()" class="flex-1 py-2.5 bg-slate-900 hover:bg-slate-850 border border-slate-750 text-slate-300 font-bold rounded-xl text-xs transition-all">
+                    Batal
+                </button>
+                <button onclick="submitExam()" class="flex-1 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl text-xs shadow-md transition-all">
+                    Kirim Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TIME OUT WARNING MODAL -->
+    <div id="timeout-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+        <div class="bg-slate-800 border border-rose-500/50 p-6 rounded-3xl max-w-sm w-full shadow-2xl text-center relative">
+            <div class="p-3 bg-rose-500/10 rounded-full w-12 h-12 flex items-center justify-center mb-4 text-rose-400 mx-auto">
+                <svg class="h-6 w-6 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Waktu Habis!</h3>
+            <p class="text-slate-400 text-xs leading-relaxed mb-6">
+                Batas waktu pengerjaan ujian Anda sudah habis. Jawaban yang sempat Anda pilih telah disimpan secara otomatis ke dalam sistem.
+            </p>
+            <button onclick="handleTimeoutFinish()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs transition-all">
+                Lihat Nilai Skor Akhir
+              </button>
+        </div>
+    </div>
+
+    <!-- SOAL DATABASE (100 SOAL MATEMATIKA EKONOMI) -->
+    <script>
+        const QUESTIONS = [
+            // --- MODUL 1: HIMPUNAN ---
+            {
+                id: 1,
+                category: "Modul 1: Himpunan",
+                difficulty: "Sedang",
+                question: "Jika Himpunan S = {x | 1 ≤ x ≤ 10, x ∈ Bilangan Asli}, A = {2, 3, 5, 7}, dan B = {1, 3, 5, 7, 9}. Tentukan komplemen dari himpunan gabungan (A ∪ B)'.",
+                options: ["{4, 6, 8, 10}", "{1, 2, 9}", "{3, 5, 7}", "{1, 2, 3, 5, 7, 9}"],
+                answer: 0,
+                explanation: "S = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}. Gabungan A ∪ B = {1, 2, 3, 5, 7, 9}. Komplemen dari A ∪ B terhadap S berarti mencari anggota S yang tidak ada di A ∪ B. Anggota tersebut adalah {4, 6, 8, 10}."
+            },
+            {
+                id: 2,
+                category: "Modul 1: Himpunan",
+                difficulty: "Tinggi",
+                question: "Dari 100 mahasiswa UT, diperoleh data: 65 orang memilih tutorial online Matematika Ekonomi, 45 orang memilih Pengantar Akuntansi, dan 20 orang memilih kedua-duanya. Berapa banyak mahasiswa yang memilih salah satu saja dari mata kuliah tersebut?",
+                options: ["70 orang", "90 orang", "80 orang", "50 orang"],
+                answer: 0,
+                explanation: "Mahasiswa yang hanya memilih Matematika Ekonomi = 65 - 20 = 45 orang. Mahasiswa yang hanya memilih Pengantar Akuntansi = 45 - 20 = 25 orang. Jumlah total mahasiswa yang memilih salah satu saja adalah 45 + 25 = 70 orang."
+            },
+            {
+                id: 3,
+                category: "Modul 1: Himpunan",
+                difficulty: "Sedang",
+                question: "Diketahui himpunan P = {a, b, c}. Manakah dari pernyataan berikut yang merupakan definisi yang benar dari himpunan kuasa (power set) dari P?",
+                options: [
+                    "Himpunan semua subset dari P, dengan jumlah elemen sebanyak 8.",
+                    "Himpunan semua subset dari P, dengan jumlah elemen sebanyak 6.",
+                    "Irisan antara P dengan dirinya sendiri.",
+                    "Selisih antara semesta dengan himpunan P."
+                ],
+                answer: 0,
+                explanation: "Himpunan kuasa dari P (P(P)) adalah himpunan yang memuat semua himpunan bagian (subset) dari P termasuk himpunan kosong dan P sendiri. Rumus jumlah anggotanya adalah 2^n. Karena n=3, maka 2³ = 8 anggota."
+            },
+            {
+                id: 4,
+                category: "Modul 1: Himpunan",
+                difficulty: "Tinggi",
+                question: "Tentukan hasil operasi selisih himpunan A - B jika diketahui A = {x | x² - 5x + 6 = 0} dan B = {x | 1 < x < 4, x ∈ Bilangan Bulat}.",
+                options: ["{}", "{2}", "{3}", "{2, 3}"],
+                answer: 0,
+                explanation: "Faktorkan persamaan x² - 5x + 6 = 0 menjadi (x-2)(x-3) = 0, sehingga A = {2, 3}. Anggota B adalah bilangan bulat di antara 1 dan 4, yaitu B = {2, 3}. Maka selisih A - B (anggota A yang tidak berada di B) adalah himpunan kosong {}."
+            },
+            {
+                id: 5,
+                category: "Modul 1: Himpunan",
+                difficulty: "Sedang",
+                question: "Manakah hukum aljabar himpunan yang menyatakan bahwa A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C)?",
+                options: ["Hukum Distributif", "Hukum Asosiatif", "Hukum Komutatif", "Hukum De Morgan"],
+                answer: 0,
+                explanation: "Hukum Distributif dalam teori himpunan menyatakan bahwa operasi irisan dapat didistribusikan ke dalam operasi gabungan, begitu juga sebaliknya."
+            },
+            {
+                id: 6,
+                category: "Modul 1: Himpunan",
+                difficulty: "Tinggi",
+                question: "Dari survei pasar komoditas beras, 80% konsumen menyukai beras organik merek X, 50% menyukai merek Y. Jika 40% dari mereka menyukai keduanya, berapa % konsumen yang tidak menyukai merek X maupun Y?",
+                options: ["10%", "20%", "30%", "15%"],
+                answer: 0,
+                explanation: "Gunakan rumus gabungan: n(X ∪ Y) = n(X) + n(Y) - n(X ∩ Y) = 80% + 50% - 40% = 90%. Maka konsumen yang tidak menyukai keduanya adalah 100% - 90% = 10%."
+            },
+            {
+                id: 7,
+                category: "Modul 1: Himpunan",
+                difficulty: "Sedang",
+                question: "Komplemen dari (A ∩ B) sesuai dengan Hukum De Morgan adalah...",
+                options: ["A' ∪ B'", "A' ∩ B'", "A ∪ B", "(A ∪ B)'"],
+                answer: 0,
+                explanation: "Hukum De Morgan menyatakan bahwa komplemen dari irisan dua himpunan sama dengan gabungan komplemen masing-masing himpunan tersebut, yaitu: (A ∩ B)' = A' ∪ B'."
+            },
+            {
+                id: 8,
+                category: "Modul 1: Himpunan",
+                difficulty: "Tinggi",
+                question: "Bila A = {1, 2}, B = {x, y}. Hasil perkalian kartesian (Cartesian Product) A × B yang benar adalah...",
+                options: [
+                    "{(1,x), (1,y), (2,x), (2,y)}",
+                    "{(1,2), (x,y)}",
+                    "{(x,1), (x,2), (y,1), (y,2)}",
+                    "{(1,x), (2,y)}"
+                ],
+                answer: 0,
+                explanation: "Perkalian kartesian A × B adalah himpunan semua pasangan berurutan (a, b) di mana a ∈ A dan b ∈ B. Jadi A × B = {(1,x), (1,y), (2,x), (2,y)}."
+            },
+            {
+                id: 9,
+                category: "Modul 1: Himpunan",
+                difficulty: "Sedang",
+                question: "Jika diagram Venn terdiri dari lingkaran yang beririsan sebagian, hubungan tersebut menunjukkan bahwa kedua himpunan adalah...",
+                options: ["Saling tumpang tindih (Joint)", "Saling lepas (Disjoint)", "Himpunan bagian (Subset)", "Saling sama (Equal)"],
+                answer: 0,
+                explanation: "Dua himpunan disebut Joint (saling tumpang tindih) jika mereka memiliki setidaknya satu anggota yang beririsan (irisan tidak sama dengan himpunan kosong)."
+            },
+            {
+                id: 10,
+                category: "Modul 1: Himpunan",
+                difficulty: "Tinggi",
+                question: "Himpunan mahasiswa yang mendapat nilai ujian A pada Matematika Ekonomi adalah M, dan nilai ujian A pada Pengantar Ekonomi Makro adalah E. Jika M ⊂ E, manakah pernyataan yang benar secara logika?",
+                options: [
+                    "Semua mahasiswa yang mendapat nilai A Matematika Ekonomi pasti mendapat nilai A Pengantar Ekonomi Makro.",
+                    "Semua mahasiswa yang mendapat nilai A Pengantar Ekonomi Makro pasti mendapat nilai A Matematika Ekonomi.",
+                    "Tidak ada mahasiswa yang mendapatkan nilai A pada kedua mata kuliah.",
+                    "Himpunan M dan E adalah saling lepas."
+                ],
+                answer: 0,
+                explanation: "Karena M ⊂ E (M himpunan bagian dari E), maka seluruh anggota M secara otomatis merupakan anggota E. Artinya setiap orang di M pasti ada di E."
+            },
+            {
+                id: 11,
+                category: "Modul 1: Himpunan",
+                difficulty: "Sedang",
+                question: "Himpunan kosong (empty set) adalah...",
+                options: [
+                    "Himpunan bagian dari setiap himpunan apapun.",
+                    "Himpunan yang memiliki satu elemen bernilai 0.",
+                    "Himpunan yang tidak bisa didefinisikan sama sekali.",
+                    "Himpunan semesta dari matematika."
+                ],
+                answer: 0,
+                explanation: "Secara teoretis, himpunan kosong (Ø atau {}) merupakan subset atau himpunan bagian dari semua himpunan yang ada."
+            },
+
+            // --- MODUL 2: DERET DAN BUNGA ---
+            {
+                id: 12,
+                category: "Modul 2: Deret & Bunga",
+                difficulty: "Tinggi",
+                question: "Suku ke-4 dari sebuah deret aritmetika adalah 15, sedangkan suku ke-8 adalah 31. Tentukan nilai suku pertama (a) dan beda (b) dari deret tersebut.",
+                options: ["a = 3, b = 4", "a = 4, b = 3", "a = 2, b = 4", "a = 3, b = 3"],
+                answer: 0,
+                explanation: "U4 = a + 3b = 15. U8 = a + 7b = 31. Eliminasi: 4b = 16 => b = 4. Substitusi b: a + 3(4) = 15 => a + 12 = 15 => a = 3."
+            },
+            {
+                id: 13,
+                category: "Modul 2: Deret & Bunga",
+                difficulty: "Tinggi",
+                question: "Seseorang menginvestasikan uang sebesar Rp 10.000.000 di bank dengan bunga majemuk 8% per tahun. Berapakah nilai investasi tersebut di akhir tahun ke-3?",
+                options: ["Rp 12.597.120", "Rp 12.400.000", "Rp 12.800.000", "Rp 12.000.000"],
+                answer: 0,
+                explanation: "Rumus Bunga Majemuk: FV = PV × (1 + i)^n = 10.000.000 × (1.08)³. Hasilnya 10.000.000 × 1.259712 = Rp 12.597.120."
+            },
+            {
+                id: 14,
+                category: "Modul 2: Deret & Bunga",
+                difficulty: "Tinggi",
+                question: "Bila tingkat diskonto yang berlaku adalah 10% per tahun, berapakah nilai sekarang (Present Value) dari penerimaan uang sebesar Rp 12.100.000 dua tahun yang akan datang?",
+                options: ["Rp 10.000.000", "Rp 11.000.000", "Rp 9.500.000", "Rp 10.500.000"],
+                answer: 0,
+                explanation: "Rumus Present Value: PV = FV / (1 + i)^n = 12.100.000 / (1 + 0.10)² = 12.100.000 / 1.21 = Rp 10.000.000."
+            },
+            {
+                id: 15,
+                category: "Modul 2: Deret & Bunga",
+                difficulty: "Tinggi",
+                question: "Hitunglah jumlah suku pertama dari barisan geometri berikut hingga suku ke-5: 3 + 6 + 12 + 24 + ...",
+                options: ["93", "96", "85", "102"],
+                answer: 0,
+                explanation: "a = 3, r = 2. Sn = a(r^n - 1) / (r - 1) => S5 = 3(2⁵ - 1) / (2 - 1) = 3(32 - 1) / 1 = 3 × 31 = 93."
+            },
+            {
+                id: 16,
+                category: "Modul 2: Deret & Bunga",
+                difficulty: "Sedang",
+                question: "Suku pertama dari sebuah deret aritmetika adalah 5 dan bedanya 3. Berapakah nilai suku ke-20?",
+                options: ["62", "65", "59", "68"],
+                answer: 0,
+                explanation: "Un = a + (n-1)b => U20 = 5 + (20-1)3 = 5 + 19 × 3 = 5 + 57 = 62."
+            },
+            {
+                id: 17,
+                category: "Modul 2: Deret & Bunga",
+                difficulty: "Tinggi",
+                question: "Jika nominal bunga bank adalah 12% per tahun, hitunglah tingkat bunga efektif jika bunga tersebut dibayarkan setiap kuartal (m = 4 kali setahun).",
+                options: ["12.55%", "12.00%", "12.48%", "12.62%"],
+                answer: 0,
+                explanation: "Rumus bunga efektif: r_eff = (1 + r/m)^m - 1 = (1 + 0.12/4)⁴ - 1 = (1.03)⁴ - 1 = 1.1255 - 1 = 0.1255 atau 12.55%."
+            },
+            {
+                id: 18,
+                category: "Modul 2: Deret & Bunga",
+                difficulty: "Tinggi",
+                question: "Deret geometri tak hingga mempunyai jumlah suku pertama S = 100 dengan rasio r = 0.6. Tentukan suku pertama (a) dari deret tersebut.",
+                options: ["40", "50", "60", "30"],
+                answer: 0,
+                explanation: "Rumus deret geometri tak hingga konvergen: S_inf = a / (1 - r) => 100 = a / (1 - 0.6) => 100 = a / 0.4 => a = 40."
+            },
+            {
+                id: 19,
+                category: "Modul 2: Deret & Bunga",
+                difficulty: "Sedang",
+                question: "Bila Suku ke-n deret aritmetika dirumuskan Un = 4n + 2, tentukan rumus jumlah n suku pertama Sn deret tersebut.",
+                options: ["2n² + 4n", "2n² + 2n", "4n² + 2n", "n² + 3n"],
+                answer: 0,
+                explanation: "U1 = a = 4(1)+2 = 6. Un = 4n+2. Sn = (n/2)(a + Un) = (n/2)(6 + 4n + 2) = (n/2)(4n + 8) = 2n² + 4n."
+            },
+            {
+                id: 20,
+                category: "Modul 2: Deret & Bunga",
+                difficulty: "Tinggi",
+                question: "Seseorang menabung Rp 2.000.000 dengan sistem bunga kontinu sebesar 10% per tahun. Berapakah akumulasi nilai uangnya setelah 2 tahun? (Gunakan e^0.2 ≈ 1.2214)",
+                options: ["Rp 2.442.800", "Rp 2.400.000", "Rp 2.510.200", "Rp 2.221.400"],
+                answer: 0,
+                explanation: "Rumus bunga kontinu: FV = P · e^(r·t) = 2.000.000 · e^(0.10 · 2) = 2.000.000 · e^0.2 = 2.000.000 · 1.2214 = Rp 2.442.800."
+            },
+            {
+                id: 21,
+                category: "Modul 2: Deret & Bunga",
+                difficulty: "Tinggi",
+                question: "Tentukan suku ke-6 dari deret geometri jika diketahui suku ke-2 adalah 10 dan suku ke-4 adalah 40 (ambil rasio r positif).",
+                options: ["160", "80", "320", "200"],
+                answer: 0,
+                explanation: "U2 = a·r = 10. U4 = a·r³ = 40. Rasio: U4/U2 = r² = 4 => r = 2. Suku pertama: a = 10 / 2 = 5. Maka U6 = a·r⁵ = 5 · 2⁵ = 5 · 32 = 160."
+            },
+            {
+                id: 22,
+                category: "Modul 2: Deret & Bunga",
+                difficulty: "Sedang",
+                question: "Nilai nominal Rp 5.000.000 dipinjamkan dengan bunga tunggal 10% per tahun selama 3 tahun. Hitunglah akumulasi nilai pinjaman di akhir tahun ke-3.",
+                options: ["Rp 6.500.000", "Rp 6.000.000", "Rp 5.500.000", "Rp 7.000.000"],
+                answer: 0,
+                explanation: "Rumus Bunga Tunggal: FV = P × (1 + r · t) = 5.000.000 × (1 + 0.10 × 3) = 5.000.000 × 1.30 = Rp 6.500.000."
+            },
+            {
+                id: 23,
+                category: "Modul 2: Deret & Bunga",
+                difficulty: "Tinggi",
+                question: "Seorang petani memprediksi hasil panennya bertambah secara aritmetika. Panen bulan pertama adalah 100 kg dan bulan kedua adalah 120 kg. Berapakah total kumulatif hasil panen selama 10 bulan?",
+                options: ["1.900 kg", "2.000 kg", "1.800 kg", "2.100 kg"],
+                answer: 0,
+                explanation: "a = 100, b = 20. S10 = (10/2) * [2a + (10-1)b] = 5 * [200 + 9(20)] = 5 * [200 + 180] = 5 * 380 = 1.900 kg."
+            },
+            {
+                id: 24,
+                category: "Modul 2: Deret & Bunga",
+                difficulty: "Tinggi",
+                question: "Berapa lama waktu yang diperlukan (tahun) agar investasi Rp 1.000.000 bertambah menjadi Rp 1.331.000 dengan bunga majemuk 10% per tahun?",
+                options: ["3 tahun", "2 tahun", "4 tahun", "5 tahun"],
+                answer: 0,
+                explanation: "FV = PV(1+i)^n => 1.331.000 = 1.000.000(1.1)^n => 1.331 = (1.1)^n. Karena 1.1³ = 1.331, maka n = 3 tahun."
+            },
+            {
+                id: 25,
+                category: "Modul 2: Deret & Bunga",
+                difficulty: "Sedang",
+                question: "Dalam teori pertumbuhan penduduk Malthus, pertumbuhan penduduk mengikuti pola deret...",
+                options: ["Geometri", "Aritmetika", "Harmonik", "Konstan"],
+                answer: 0,
+                explanation: "Malthus berpendapat bahwa pertumbuhan penduduk mengikuti deret ukur (geometri), sedangkan pertumbuhan sarana pangan mengikuti deret hitung (aritmetika)."
+            },
+
+            // --- MODUL 3: FUNGSI LINEAR ---
+            {
+                id: 26,
+                category: "Modul 3: Fungsi Linear",
+                difficulty: "Sedang",
+                question: "Tentukan persamaan garis lurus yang melewati titik A(1, 2) dan titik B(3, 8).",
+                options: ["y = 3x - 1", "y = 2x + 1", "y = 3x + 1", "y = 4x - 2"],
+                answer: 0,
+                explanation: "Gradien m = (8-2)/(3-1) = 6/2 = 3. Persamaan garis: y - y1 = m(x - x1) => y - 2 = 3(x - 1) => y = 3x - 1."
+            },
+            {
+                id: 27,
+                category: "Modul 3: Fungsi Linear",
+                difficulty: "Sedang",
+                question: "Berapakah gradien (kemiringan) dari persamaan garis linear 2y - 6x + 8 = 0?",
+                options: ["3", "-3", "6", "-4"],
+                answer: 0,
+                explanation: "Ubah ke bentuk y = mx + c. Dari 2y = 6x - 8 => y = 3x - 4. Nilai m (koefisien x) adalah 3."
+            },
+            {
+                id: 28,
+                category: "Modul 3: Fungsi Linear",
+                difficulty: "Tinggi",
+                question: "Tentukan hubungan kedudukan antara dua garis lurus berikut: Garis k: 3x - y + 5 = 0 dan Garis l: x + 3y - 6 = 0.",
+                options: ["Saling Tegak Lurus", "Saling Sejajar", "Berimpit", "Berpotongan tetapi tidak siku-siku"],
+                answer: 0,
+                explanation: "Garis k memiliki gradien m1 = 3. Garis l: 3y = -x + 6 => y = -1/3 x + 2 (m2 = -1/3). Karena m1 * m2 = 3 * (-1/3) = -1, maka kedua garis saling tegak lurus."
+            },
+            {
+                id: 29,
+                category: "Modul 3: Fungsi Linear",
+                difficulty: "Sedang",
+                question: "Persamaan garis yang memotong sumbu-x di titik (4, 0) dan memotong sumbu-y di titik (0, -3) adalah...",
+                options: ["3x - 4y = 12", "3x + 4y = 12", "4x - 3y = 12", "4x + 3y = 12"],
+                answer: 0,
+                explanation: "Gunakan rumus cepat bx + ay = ab, dengan a = 4 dan b = -3. Maka -3x + 4y = -12. Jika dikali -1 menjadi 3x - 4y = 12."
+            },
+            {
+                id: 30,
+                category: "Modul 3: Fungsi Linear",
+                difficulty: "Tinggi",
+                question: "Tentukan titik koordinat perpotongan antara garis lurus 2x + 3y = 12 dan garis x - y = 1.",
+                options: ["(3, 2)", "(2, 1)", "(4, 3)", "(3, 1)"],
+                answer: 0,
+                explanation: "Selesaikan sistem linear: x - y = 1 => x = y + 1. Substitusi ke pers 1: 2(y+1) + 3y = 12 => 2y + 2 + 3y = 12 => 5y = 10 => y = 2. Maka x = 2 + 1 = 3. Perpotongan di (3, 2)."
+            },
+            {
+                id: 31,
+                category: "Modul 3: Fungsi Linear",
+                difficulty: "Sedang",
+                question: "Bagaimanakah kedudukan dua garis linear jika nilai gradiennya sama (m1 = m2) tetapi konstanta intersepnya berbeda (c1 ≠ c2)?",
+                options: ["Sejajar", "Tegak Lurus", "Berimpit", "Berpotongan"],
+                answer: 0,
+                explanation: "Garis sejajar didefinisikan sebagai garis-garis yang memiliki kemiringan (gradien) yang sama tetapi tidak melewati titik potong sumbu-y yang sama."
+            },
+            {
+                id: 32,
+                category: "Modul 3: Fungsi Linear",
+                difficulty: "Tinggi",
+                question: "Garis anggaran (budget line) seorang konsumen ditunjukkan oleh persamaan 10X + 5Y = 100. Jika harga barang X turun 50% sedangkan anggaran dan harga Y tetap, berapakah kemiringan kurva anggaran yang baru?",
+                options: ["-1", "-2", "-0.5", "-4"],
+                answer: 0,
+                explanation: "Harga awal X adalah 10, turun 50% menjadi 5. Persamaan baru: 5X + 5Y = 100 => 5Y = -5X + 100 => Y = -X + 20. Kemiringan garis anggaran baru (slope) adalah -1."
+            },
+            {
+                id: 33,
+                category: "Modul 3: Fungsi Linear",
+                difficulty: "Sedang",
+                question: "Persamaan dari sebuah garis lurus horizontal yang melewati titik koordinat (5, -3) adalah...",
+                options: ["y = -3", "x = 5", "y = 5", "x = -3"],
+                answer: 0,
+                explanation: "Garis lurus horizontal sejajar dengan sumbu-x dan memiliki bentuk umum y = k, di mana k adalah konstanta koordinat y yang dilalui. Maka y = -3."
+            },
+            {
+                id: 34,
+                category: "Modul 3: Fungsi Linear",
+                difficulty: "Tinggi",
+                question: "Carilah persamaan linear yang sejajar dengan garis 4x - 2y + 6 = 0 dan melewati titik (1, 5).",
+                options: ["y = 2x + 3", "y = -2x + 7", "y = 2x + 5", "y = 4x + 1"],
+                answer: 0,
+                explanation: "Persamaan garis awal: 2y = 4x + 6 => y = 2x + 3 (m = 2). Garis sejajar memiliki m = 2. Gunakan rumus y - y1 = m(x - x1) => y - 5 = 2(x - 1) => y = 2x + 3."
+            },
+            {
+                id: 35,
+                category: "Modul 3: Fungsi Linear",
+                difficulty: "Sedang",
+                question: "Di kuadran manakah titik koordinat keseimbangan (Pe, Qe) dalam ekonomi umumnya berada?",
+                options: ["Kuadran I", "Kuadran II", "Kuadran III", "Kuadran IV"],
+                answer: 0,
+                explanation: "Dalam ilmu ekonomi, variabel harga (P) dan kuantitas (Q) harus bernilai non-negatif (positif atau nol), yang merepresentasikan koordinat di Kuadran I."
+            },
+
+            // --- MODUL 4: APLIKASI LINEAR (PASAR, PAJAK, SUBSIDI) ---
+            {
+                id: 36,
+                category: "Modul 4: Keseimbangan & Pajak",
+                difficulty: "Tinggi",
+                question: "Fungsi permintaan Qd = 100 - 2P dan fungsi penawaran Qs = 3P - 50. Tentukan harga (Pe) dan jumlah (Qe) keseimbangan pasar sebelum dikenakan pajak.",
+                options: ["P = 30, Q = 40", "P = 28, Q = 44", "P = 32, Q = 36", "P = 30, Q = 30"],
+                answer: 0,
+                explanation: "Keseimbangan Qd = Qs => 100 - 2P = 3P - 50 => 150 = 5P => P = 30. Masukkan ke Qd: Q = 100 - 2(30) = 40."
+            },
+            {
+                id: 37,
+                category: "Modul 4: Keseimbangan & Pajak",
+                difficulty: "Tinggi",
+                question: "Menggunakan fungsi Qd = 100 - 2P dan Qs = 3P - 50, jika pemerintah mengenakan pajak spesifik t = 5 per unit, tentukan harga keseimbangan setelah pajak (Pt).",
+                options: ["P = 33", "P = 30", "P = 32", "P = 35"],
+                answer: 0,
+                explanation: "Pajak t = 5 menggeser fungsi penawaran: Qst = 3(P - 5) - 50 = 3P - 65. Keseimbangan baru: Qd = Qst => 100 - 2P = 3P - 65 => 165 = 5P => Pt = 33."
+            },
+            {
+                id: 38,
+                category: "Modul 4: Keseimbangan & Pajak",
+                difficulty: "Tinggi",
+                question: "Dari kasus di atas (Pe = 30, Pt = 33, t = 5), berapakah besarnya tarif pajak per unit yang akhirnya ditanggung oleh konsumen?",
+                options: ["3 per unit", "2 per unit", "5 per unit", "1.5 per unit"],
+                answer: 0,
+                explanation: "Pajak konsumen tc = Pt - Pe = 33 - 30 = 3 per unit."
+            },
+            {
+                id: 39,
+                category: "Modul 4: Keseimbangan & Pajak",
+                difficulty: "Tinggi",
+                question: "Dari kasus di atas, berapakah besarnya tarif pajak per unit yang harus ditanggung oleh produsen?",
+                options: ["2 per unit", "3 per unit", "1 per unit", "2.5 per unit"],
+                answer: 0,
+                explanation: "Pajak produsen tp = t - tc = 5 - 3 = 2 per unit."
+            },
+            {
+                id: 40,
+                category: "Modul 4: Keseimbangan & Pajak",
+                difficulty: "Tinggi",
+                question: "Berapakah total penerimaan pajak yang diperoleh kas pemerintah dari keseimbangan pasar setelah pajak tersebut?",
+                options: ["170", "200", "150", "165"],
+                answer: 0,
+                explanation: "Kuantitas baru Qt = 100 - 2(33) = 34 unit. Total pajak T = t * Qt = 5 * 34 = 170."
+            },
+            {
+                id: 41,
+                category: "Modul 4: Keseimbangan & Pajak",
+                difficulty: "Tinggi",
+                question: "Fungsi Qd = 80 - P dan Qs = 2P - 10. Jika pemerintah memberikan subsidi sebesar s = 3 per unit, tentukan harga keseimbangan yang baru setelah adanya subsidi (Ps).",
+                options: ["28", "26", "29", "27"],
+                answer: 0,
+                explanation: "Subsidi s = 3 menggeser penawaran: Qss = 2(P + 3) - 10 = 2P - 4. Keseimbangan baru: 80 - P = 2P - 4 => 84 = 3P => Ps = 28. (Sebelum subsidi Pe = 30)."
+            },
+            {
+                id: 42,
+                category: "Modul 4: Keseimbangan & Pajak",
+                difficulty: "Tinggi",
+                question: "Dari kasus subsidi di atas (Pe = 30, Ps = 28, s = 3), berapakah porsi subsidi yang dinikmati oleh konsumen per unit barang?",
+                options: ["2 per unit", "1 per unit", "3 per unit", "1.5 per unit"],
+                answer: 0,
+                explanation: "Subsidi konsumen sc = Pe - Ps = 30 - 28 = 2 per unit."
+            },
+            {
+                id: 43,
+                category: "Modul 4: Keseimbangan & Pajak",
+                difficulty: "Tinggi",
+                question: "Dari kasus subsidi di atas, hitunglah total anggaran pengeluaran subsidi yang dikeluarkan oleh pemerintah.",
+                options: ["156", "150", "162", "144"],
+                answer: 0,
+                explanation: "Qss pada Ps = 28 adalah Q = 80 - 28 = 52 unit. Total subsidi S = s * Qss = 3 * 52 = 156."
+            },
+            {
+                id: 44,
+                category: "Modul 4: Keseimbangan & Pajak",
+                difficulty: "Sedang",
+                question: "Jika harga pasar ditetapkan secara sepihak oleh pemerintah di bawah harga keseimbangan (P < Pe), kebijakan ini disebut...",
+                options: ["Harga Eceran Tertinggi (Ceiling Price)", "Harga Batas Bawah (Floor Price)", "Pajak Penjualan", "Kuota Impor"],
+                answer: 0,
+                explanation: "Ceiling price (Harga Eceran Tertinggi) ditetapkan pemerintah di bawah harga keseimbangan pasar bebas untuk melindungi konsumen agar barang tetap terjangkau."
+            },
+            {
+                id: 45,
+                category: "Modul 4: Keseimbangan & Pajak",
+                difficulty: "Tinggi",
+                question: "Fungsi permintaan Qd = 60 - 0.5P. Berapakah harga tertinggi (choke price) di mana konsumen tidak bersedia membeli barang tersebut sama sekali?",
+                options: ["120", "60", "30", "100"],
+                answer: 0,
+                explanation: "Konsumen berhenti membeli saat Qd = 0. Maka 0 = 60 - 0.5P => 0.5P = 60 => P = 120."
+            },
+            {
+                id: 46,
+                category: "Modul 4: Keseimbangan & Pajak",
+                difficulty: "Tinggi",
+                question: "Tentukan nilai Surplus Konsumen (CS) jika fungsi permintaan Qd = 40 - P dan harga keseimbangan pasar yang terbentuk adalah Pe = 10.",
+                options: ["450", "900", "300", "600"],
+                explanation: "Kuantitas pada Pe = 10 adalah Q = 40 - 10 = 30. Choke Price (P max) saat Qd = 0 adalah P = 40. Surplus Konsumen (CS) = 0.5 * Q * (P max - Pe) = 0.5 * 30 * (40 - 10) = 450.",
+                answer: 0
+            },
+            {
+                id: 47,
+                category: "Modul 4: Keseimbangan & Pajak",
+                difficulty: "Sedang",
+                question: "Bila kuantitas yang diminta tetap tidak berubah meskipun terjadi kenaikan atau penurunan harga yang besar, kurva permintaan tersebut bersifat...",
+                options: ["Inelastis Sempurna", "Elastis Sempurna", "Elastis Uniter", "Elastis"],
+                answer: 0,
+                explanation: "Permintaan inelastis sempurna ditunjukkan oleh kurva permintaan vertikal (Ed = 0), di mana kuantitas barang yang diminta konstan berapapun harganya."
+            },
+            {
+                id: 48,
+                category: "Modul 4: Keseimbangan & Pajak",
+                difficulty: "Tinggi",
+                question: "Keseimbangan pasar setelah pemerintah mengenakan pajak proporsional sebesar 10% dari harga jual pada fungsi Qd = 100 - P dan Qs = P - 20 akan menyebabkan penawaran bergeser menjadi...",
+                options: ["Qs = 0.9P - 20", "Qs = 1.1P - 20", "Qs = P - 22", "Qs = P - 18"],
+                answer: 0,
+                explanation: "Pajak proporsional t% mengubah P yang diterima produsen menjadi P(1 - t). Maka Qs_t = (0.9P) - 20."
+            },
+            {
+                id: 49,
+                category: "Modul 4: Keseimbangan & Pajak",
+                difficulty: "Sedang",
+                question: "Hukum Permintaan menyatakan bahwa hubungan antara tingkat harga dengan jumlah barang yang diminta berbanding terbalik. Hal ini ditunjukkan oleh...",
+                options: [
+                    "Kemiringan (slope) kurva permintaan yang bernilai negatif.",
+                    "Kemiringan (slope) kurva penawaran yang bernilai positif.",
+                    "Pergeseran kurva penawaran ke arah kanan bawah.",
+                    "Keseimbangan pasar baru yang menguntungkan produsen."
+                ],
+                answer: 0,
+                explanation: "Hubungan terbalik antara harga dan kuantitas diminta direpresentasikan secara grafis dengan kemiringan kurva yang mengarah ke kanan bawah (slope negatif)."
+            },
+            {
+                id: 50,
+                category: "Modul 4: Keseimbangan & Pajak",
+                difficulty: "Tinggi",
+                question: "Tentukan harga keseimbangan pasar non-linear dari fungsi permintaan Qd = 24 - P² dan fungsi penawaran Qs = P² - P - 4 (ambil harga positif).",
+                options: ["P = 4", "P = 3", "P = 5", "P = 2"],
+                answer: 0,
+                explanation: "Qd = Qs => 24 - P² = P² - P - 4 => 2P² - P - 28 = 0. Memfaktorkan persamaan kuadrat tersebut diperoleh (2P + 7)(P - 4) = 0. Nilai P positif adalah 4."
+            },
+
+            // --- MODUL 5: KONSUMSI DAN TABUNGAN ---
+            {
+                id: 51,
+                category: "Modul 5: Konsumsi & Tabungan",
+                difficulty: "Sedang",
+                question: "Fungsi konsumsi agregat ditunjukkan oleh persamaan C = 200 + 0.8Y. Bagaimanakah fungsi tabungan (S) yang sesuai dengan teori pendapatan?",
+                options: ["S = -200 + 0.2Y", "S = -200 + 0.8Y", "S = 200 - 0.2Y", "S = -200 - 0.2Y"],
+                answer: 0,
+                explanation: "Y = C + S => S = Y - C = Y - (200 + 0.8Y) = -200 + 0.2Y."
+            },
+            {
+                id: 52,
+                category: "Modul 5: Konsumsi & Tabungan",
+                difficulty: "Sedang",
+                question: "Berdasarkan fungsi konsumsi C = 200 + 0.8Y, tentukan besar tabungan (S) nasional ketika tingkat pendapatan nasional Y = 1.500.",
+                options: ["100", "1.400", "200", "50"],
+                answer: 0,
+                explanation: "S = -200 + 0.2Y. Jika Y = 1.500, maka S = -200 + 0.2(1.500) = -200 + 300 = 100."
+            },
+            {
+                id: 53,
+                category: "Modul 5: Konsumsi & Tabungan",
+                difficulty: "Tinggi",
+                question: "Pada tingkat pendapatan nasional (Y) berapakah pendapatan nasional tersebut habis digunakan untuk konsumsi (Break-Even Income) bila C = 250 + 0.75Y?",
+                options: ["1.000", "1.250", "750", "500"],
+                answer: 0,
+                explanation: "Break-even income terjadi saat S = 0, yang berarti Y = C. Maka Y = 250 + 0.75Y => 0.25Y = 250 => Y = 1.000."
+            },
+            {
+                id: 54,
+                category: "Modul 5: Konsumsi & Tabungan",
+                difficulty: "Sedang",
+                question: "Apa yang dimaksud dengan Marginal Propensity to Save (MPS)?",
+                options: [
+                    "Rasio perbandingan antara perubahan tabungan dengan perubahan pendapatan (ΔS / ΔY).",
+                    "Rasio perbandingan antara total tabungan dengan total pendapatan (S / Y).",
+                    "Porsi tabungan otonom ketika pendapatan nasional nol.",
+                    "Faktor penggali dari pengeluaran sektor publik."
+                ],
+                answer: 0,
+                explanation: "MPS mengukur porsi tambahan tabungan dari setiap unit tambahan pendapatan nasional yang diterima masyarakat."
+            },
+            {
+                id: 55,
+                category: "Modul 5: Konsumsi & Tabungan",
+                difficulty: "Tinggi",
+                question: "Jika pengeluaran konsumsi otonom masyarakat adalah 100 dan MPC bernilai 0.8. Hitunglah koefisien angka pengganda pengeluaran investasi (Multiplier Investment, k).",
+                options: ["5", "4", "2.5", "10"],
+                answer: 0,
+                explanation: "Rumus multiplier: k = 1 / (1 - MPC) = 1 / MPS. Diketahui MPC = 0.8, maka k = 1 / (1 - 0.8) = 1 / 0.2 = 5."
+            },
+            {
+                id: 56,
+                category: "Modul 5: Konsumsi & Tabungan",
+                difficulty: "Tinggi",
+                question: "Menggunakan koefisien pengganda k = 5, apabila pengeluaran investasi swasta nasional meningkat sebesar Rp 50 miliar, berapakah perkiraan total kenaikan pendapatan nasional keseimbangan?",
+                options: ["Rp 250 miliar", "Rp 100 milar", "Rp 50 miliar", "Rp 200 miliar"],
+                answer: 0,
+                explanation: "Kenaikan pendapatan nasional ΔY = k * ΔI = 5 * 50 miliar = Rp 250 miliar."
+            },
+            {
+                id: 57,
+                category: "Modul 5: Konsumsi & Tabungan",
+                difficulty: "Tinggi",
+                question: "Dalam perekonomian tiga sektor, pendapatan disposibel dirumuskan Yd = Y - T. Jika C = 100 + 0.8Yd dan pajak tetap T = 30. Tentukan fungsi konsumsi terhadap Y.",
+                options: ["C = 76 + 0.8Y", "C = 100 + 0.8Y", "C = 124 + 0.8Y", "C = 76 + 0.2Y"],
+                answer: 0,
+                explanation: "C = 100 + 0.8(Y - 30) = 100 + 0.8Y - 24 = 76 + 0.8Y."
+            },
+            {
+                id: 58,
+                category: "Modul 5: Konsumsi & Tabungan",
+                difficulty: "Tinggi",
+                question: "Bila diketahui fungsi tabungan S = -150 + 0.25Y. Tentukan nilai pendapatan nasional Y di mana konsumsi total bernilai tepat Rp 900.",
+                options: ["1.000", "900", "1.200", "1.100"],
+                answer: 0,
+                explanation: "Fungsi konsumsi C = 150 + 0.75Y. Jika C = 900, maka 900 = 150 + 0.75Y => 750 = 0.75Y => Y = 1.000."
+            },
+            {
+                id: 59,
+                category: "Modul 5: Konsumsi & Tabungan",
+                difficulty: "Sedang",
+                question: "Sifat matematis dari jumlah koefisien MPC dan MPS adalah...",
+                options: ["MPC + MPS = 1", "MPC - MPS = 1", "MPC * MPS = 1", "MPC + MPS = 0"],
+                answer: 0,
+                explanation: "Karena tambahan pendapatan dialokasikan hanya untuk konsumsi atau tabungan (ΔY = ΔC + ΔS), maka dibagi ΔY diperoleh ΔC/ΔY + ΔS/ΔY = 1 => MPC + MPS = 1."
+            },
+            {
+                id: 60,
+                category: "Modul 5: Konsumsi & Tabungan",
+                difficulty: "Tinggi",
+                question: "Jika pendapatan nasional suatu negara Y = 2000 dan konsumsi C = 1700. Berapakah nilai APS (Average Propensity to Save) masyarakat tersebut?",
+                options: ["0.15", "0.85", "0.20", "0.30"],
+                answer: 0,
+                explanation: "Tabungan S = Y - C = 2000 - 1700 = 300. Nilai APS = S / Y = 300 / 2000 = 0.15."
+            },
+            {
+                id: 61,
+                category: "Modul 5: Konsumsi & Tabungan",
+                difficulty: "Tinggi",
+                question: "Fungsi konsumsi suatu negara adalah C = 50 + 0.7Y. Jika pemerintah mengenakan pajak proporsional t = 20% dari pendapatan, tentukan fungsi konsumsi baru setelah pajak.",
+                options: ["C = 50 + 0.56Y", "C = 50 + 0.7Y", "C = 50 + 0.50Y", "C = 40 + 0.56Y"],
+                answer: 0,
+                explanation: "Pajak proporsional T = 0.2Y. Maka Yd = Y - 0.2Y = 0.8Y. Substitusi Yd ke C: C = 50 + 0.7(0.8Y) = 50 + 0.56Y."
+            },
+            {
+                id: 62,
+                category: "Modul 5: Konsumsi & Tabungan",
+                difficulty: "Sedang",
+                question: "Pengeluaran konsumsi otonom (autonomous consumption) didefinisikan sebagai...",
+                options: [
+                    "Pengeluaran konsumsi minimum saat pendapatan nasional sama dengan nol.",
+                    "Konsumsi tambahan akibat peningkatan pendapatan nasional.",
+                    "Konsumsi yang dipengaruhi langsung oleh tingkat suku bunga simpanan.",
+                    "Rata-rata pengeluaran bulanan konsumen berpendapatan tetap."
+                ],
+                answer: 0,
+                explanation: "Konsumsi otonom dilambangkan dengan konstanta 'a' dalam C = a + bY, menunjukkan konsumsi mutlak yang harus dipenuhi demi bertahan hidup ketika Y = 0."
+            },
+            {
+                id: 63,
+                category: "Modul 5: Konsumsi & Tabungan",
+                difficulty: "Tinggi",
+                question: "Bila perekonomian terbuka memiliki hasrat impor marjinal (marginal propensity to import) m = 0.1, dan MPC = 0.8. Hitung multiplier terbuka (open economy multiplier) k = 1 / (1 - MPC + m).",
+                options: ["3.33", "5", "2.5", "4"],
+                answer: 0,
+                explanation: "k = 1 / (1 - 0.8 + 0.1) = 1 / (0.2 + 0.1) = 1 / 0.3 ≈ 3.33."
+            },
+            {
+                id: 64,
+                category: "Modul 5: Konsumsi & Tabungan",
+                difficulty: "Tinggi",
+                question: "Dari fungsi konsumsi C = 150 + 0.75Yd dan pajak T = 0.2Y, hitunglah besar pendapatan disposibel (Yd) jika pendapatan nasional Y adalah 2000.",
+                options: ["1600", "2000", "1500", "1800"],
+                answer: 0,
+                explanation: "T = 0.2 * 2000 = 400. Yd = Y - T = 2000 - 400 = 1600."
+            },
+            {
+                id: 65,
+                category: "Modul 5: Konsumsi & Tabungan",
+                difficulty: "Tinggi",
+                question: "Dari soal sebelumnya, tentukan total pengeluaran konsumsi masyarakat jika pendapatan disposibel Yd adalah 1600.",
+                options: ["1350", "1500", "1200", "1400"],
+                answer: 0,
+                explanation: "C = 150 + 0.75(1600) = 150 + 1200 = 1350."
+            },
+
+            // --- MODUL 6: TEORI UTILITAS DAN INDIFERENS ---
+            {
+                id: 66,
+                category: "Modul 6: Teori Utilitas",
+                difficulty: "Tinggi",
+                question: "Kurva kepuasan sama (indifference curve) seorang konsumen ditunjukkan oleh fungsi utilitas linear U = 4X + 5Y. Jika harga barang X adalah 2 dan harga Y adalah 3 dengan anggaran konsumen sebesar 120. Manakah kombinasi optimal yang dipilih konsumen?",
+                options: [
+                    "X = 60, Y = 0 (Solusi Sudut)",
+                    "X = 0, Y = 40 (Solusi Sudut)",
+                    "X = 30, Y = 20",
+                    "X = 40, Y = 13.3"
+                ],
+                answer: 0,
+                explanation: "Bandingkan utilitas marjinal per rupiah (MU/P). MUx/Px = 4/2 = 2. MUy/Py = 5/3 = 1.67. Karena MUx/Px > MUy/Py, maka konsumen membelanjakan seluruh anggaran untuk membeli barang X saja. X = 120 / 2 = 60 unit, Y = 0."
+            },
+            {
+                id: 67,
+                category: "Modul 6: Teori Utilitas",
+                difficulty: "Tinggi",
+                question: "Dari kombinasi konsumsi optimal (60, 0) pada kasus di atas, berapakah tingkat utilitas maksimum yang dicapai konsumen?",
+                options: ["240", "200", "120", "300"],
+                answer: 0,
+                explanation: "U = 4(60) + 5(0) = 240."
+            },
+            {
+                id: 68,
+                category: "Modul 6: Teori Utilitas",
+                difficulty: "Tinggi",
+                question: "Garis anggaran seorang konsumen dinyatakan sebagai 2X + 4Y = 80. Berapakah nilai kemiringan (slope) kurva anggaran tersebut?",
+                options: ["-0.5", "-2", "0.5", "-4"],
+                answer: 0,
+                explanation: "4Y = -2X + 80 => Y = -0.5X + 20. Nilai kemiringan (slope) adalah koefisien X, yaitu -0.5."
+            },
+            {
+                id: 69,
+                category: "Modul 6: Teori Utilitas",
+                difficulty: "Tinggi",
+                question: "Fungsi utilitas Cobb-Douglas seorang konsumen berbentuk U = X · Y. Jika harga barang X adalah 4 dan harga Y adalah 10 dengan anggaran 200, tentukan kuantitas konsumsi optimal X dan Y agar tercapai kepuasan maksimum.",
+                options: ["X = 25, Y = 10", "X = 20, Y = 12", "X = 10, Y = 25", "X = 30, Y = 8"],
+                answer: 0,
+                explanation: "Sifat Cobb-Douglas pangkat sama membagi anggaran sama rata untuk kedua barang. Anggaran untuk X = 200/2 = 100 => X = 100/4 = 25 unit. Anggaran untuk Y = 200/2 = 100 => Y = 100/10 = 10 unit."
+            },
+            {
+                id: 70,
+                category: "Modul 6: Teori Utilitas",
+                difficulty: "Sedang",
+                question: "Marginal Rate of Substitution (MRS) secara geometris ditunjukkan oleh...",
+                options: [
+                    "Kemiringan (slope) dari Kurva Indiferen.",
+                    "Kemiringan (slope) dari Garis Anggaran.",
+                    "Pergeseran kurva permintaan ke kanan atas.",
+                    "Titik potong garis anggaran dengan sumbu vertikal."
+                ],
+                answer: 0,
+                explanation: "MRS adalah kemiringan kurva indiferen pada titik tertentu, mengukur tingkat kesediaan konsumen mengganti barang Y demi menambah unit barang X tanpa mengubah kepuasan."
+            },
+            {
+                id: 71,
+                category: "Modul 6: Teori Utilitas",
+                difficulty: "Sedang",
+                question: "Kurva indiferen yang berbentuk huruf 'L' siku-siku menggambarkan hubungan dua jenis barang...",
+                options: ["Komplementer Sempurna", "Substitusi Sempurna", "Barang Mewah", "Inferior"],
+                answer: 0,
+                explanation: "Kurva indiferen siku-siku (fungsi Leontief) mencerminkan barang komplementer sempurna yang dikonsumsi berpasangan dalam perbandingan tetap, seperti sepatu kiri dan sepatu kanan."
+            },
+            {
+                id: 72,
+                category: "Modul 6: Teori Utilitas",
+                difficulty: "Tinggi",
+                question: "Bila pendapatan anggaran meningkat dua kali lipat dan harga kedua barang juga naik dua kali lipat, bagaimana kondisi garis anggaran konsumen?",
+                options: [
+                    "Tetap pada posisi semula (tidak mengalami perubahan).",
+                    "Bergeser sejajar ke arah kanan luar.",
+                    "Bergeser sejajar ke arah kiri dalam.",
+                    "Berotasi mendekati sumbu origin."
+                ],
+                answer: 0,
+                explanation: "Sesuai teori matematika ekonomi, jika semua harga dan pendapatan berubah secara proporsional dengan faktor pengali yang sama, maka rasio harga dan batas kuantitas riil tetap sama, sehingga posisi kurva anggaran tidak berubah."
+            },
+            {
+                id: 73,
+                category: "Modul 6: Teori Utilitas",
+                difficulty: "Tinggi",
+                question: "Syarat keseimbangan konsumen untuk memaksimalkan utilitasnya dengan kendala anggaran terjadi ketika...",
+                options: [
+                    "Slope Kurva Indiferen sama dengan Slope Garis Anggaran (MRS_xy = Px/Py)",
+                    "Konsumsi barang X sama dengan barang Y",
+                    "Marginal Utility bernilai nol untuk kedua barang",
+                    "Garis anggaran tepat sejajar sumbu horizontal"
+                ],
+                answer: 0,
+                explanation: "Optimalisasi utilitas berkendala anggaran mensyaratkan titik persinggungan antara kurva indiferens dengan garis anggaran, yang berarti gradien (slope) kedua kurva tersebut bernilai sama."
+            },
+            {
+                id: 74,
+                category: "Modul 6: Teori Utilitas",
+                difficulty: "Sedang",
+                question: "Hukum kepuasan marjinal yang semakin menurun (The Law of Diminishing Marginal Utility) pertama kali dikemukakan dalam...",
+                options: ["Hukum Gossen I", "Hukum Gossen II", "Hukum Engel", "Teori Keynes"],
+                answer: 0,
+                explanation: "Hukum Gossen I menyatakan bahwa pemenuhan kepuasan dari suatu barang yang dilakukan terus menerus akan menyebabkan tingkat kepuasan tambahan (marginal utility) semakin menurun."
+            },
+            {
+                id: 75,
+                category: "Modul 6: Teori Utilitas",
+                difficulty: "Tinggi",
+                question: "Bila utilitas total konsumen berbentuk U = 12X - X², berapakah tingkat konsumsi barang X agar kepuasan totalnya mencapai nilai maksimum?",
+                options: ["6 unit", "12 unit", "4 unit", "8 unit"],
+                answer: 0,
+                explanation: "Kepuasan total maksimum dicapai ketika utilitas marjinal MU = dU/dX = 0. d(12X - X²)/dX = 12 - 2X = 0 => 2X = 12 => X = 6 unit."
+            },
+
+            // --- MODUL 7: LIMIT DAN TURUNAN FUNGSI ---
+            {
+                id: 76,
+                category: "Modul 7: Limit & Turunan",
+                difficulty: "Sedang",
+                question: "Tentukan nilai dari operasi limit fungsi berikut: lim (x² - 9) / (x - 3) saat x mendekati 3.",
+                options: ["6", "0", "3", "Tak Terdefinisi"],
+                answer: 0,
+                explanation: "Substitusi langsung x=3 menghasilkan bentuk tak tentu 0/0. Faktorkan pembilang: x²-9 = (x-3)(x+3). Coret (x-3), tersisa lim (x+3) = 3+3 = 6."
+            },
+            {
+                id: 77,
+                category: "Modul 7: Limit & Turunan",
+                difficulty: "Tinggi",
+                question: "Hitunglah nilai limit fungsi berikut: lim (3x² - 5x - 2) / (x - 2) saat x mendekati 2.",
+                options: ["7", "5", "3", "0"],
+                answer: 0,
+                explanation: "Substitusi langsung menghasilkan 0/0. Faktorkan pembilangnya: 3x²-5x-2 = (3x+1)(x-2). Persamaan menjadi lim (3x+1) = 3(2)+1 = 7."
+            },
+            {
+                id: 78,
+                category: "Modul 7: Limit & Turunan",
+                difficulty: "Sedang",
+                question: "Kondisi diskontinuitas di mana nilai limit fungsi x mendekati a ada, namun nilai fungsi f(a) tidak terdefinisi disebut...",
+                options: ["Diskontinuitas Titik Lowong", "Diskontinuitas Terhingga", "Diskontinuitas Tak Terhingga", "Kontinu Sempurna"],
+                answer: 0,
+                explanation: "Diskontinuitas Titik Lowong (removable discontinuity) ditandai dengan limit fungsi yang terdefinisi dengan jelas pada suatu titik, namun nilai fungsi di titik tersebut bolong/tidak terdefinisi."
+            },
+            {
+                id: 79,
+                category: "Modul 7: Limit & Turunan",
+                difficulty: "Sedang",
+                question: "Dapatkan turunan pertama (y') dari fungsi aljabar berikut: y = 4x³ - 5x² + 7.",
+                options: ["12x² - 10x", "12x² - 10", "4x² - 5x", "12x³ - 10x"],
+                answer: 0,
+                explanation: "Aturan pangkat turunan d(x^n)/dx = n·x^(n-1). y = 4x³ - 5x² + 7 => y' = 4(3)x² - 5(2)x + 0 = 12x² - 10x."
+            },
+            {
+                id: 80,
+                category: "Modul 7: Limit & Turunan",
+                difficulty: "Tinggi",
+                question: "Tentukan turunan pertama dari fungsi multiplikasi y = (2x² - 3)(3x + 1).",
+                options: ["18x² + 4x - 9", "12x² + 4x", "18x² - 9", "12x² - 9"],
+                answer: 0,
+                explanation: "Kalikan fungsinya terlebih dahulu: y = 6x³ + 2x² - 9x - 3. Turunkan terhadap x: y' = 18x² + 4x - 9."
+            },
+            {
+                id: 81,
+                category: "Modul 7: Limit & Turunan",
+                difficulty: "Tinggi",
+                question: "Tentukan turunan pertama dari fungsi pembagian y = (3x - 1) / (x + 2) menggunakan aturan pembagian (u/v).",
+                options: ["7 / (x + 2)³", "7 / (x + 2)²", "5 / (x + 2)³", "-7 / (x + 2)²"],
+                answer: 1,
+                explanation: "u = 3x-1 => u' = 3. v = x+2 => v' = 1. y' = (u'v - uv')/v² = (3(x+2) - 1(3x-1))/(x+2)² = (3x+6 - 3x+1)/(x+2)² = 7 / (x+2)²."
+            },
+            {
+                id: 82,
+                category: "Modul 7: Limit & Turunan",
+                difficulty: "Tinggi",
+                question: "Dapatkan turunan pertama dari fungsi komposisi y = (2x + 1)⁵ menggunakan Aturan Rantai.",
+                options: ["10(2x + 1)⁴", "5(2x + 1)⁴", "2(2x + 1)⁴", "10(2x + 1)⁵"],
+                answer: 0,
+                explanation: "Misal u = 2x+1 => du/dx = 2. y = u⁵ => dy/du = 5u⁴. Maka dy/dx = dy/du * du/dx = 5(2x+1)⁴ * 2 = 10(2x+1)⁴."
+            },
+            {
+                id: 83,
+                category: "Modul 7: Limit & Turunan",
+                difficulty: "Tinggi",
+                question: "Fungsi jarak pergerakan suatu partikel dirumuskan s(t) = 2t³ - 4t. Berapakah kecepatan sesaat partikel pada detik ke-3?",
+                options: ["50 m/s", "54 m/s", "48 m/s", "60 m/s"],
+                answer: 0,
+                explanation: "Kecepatan sesaat v(t) = s'(t) = 6t² - 4. Pada t = 3, v(3) = 6(3)² - 4 = 6(9) - 4 = 54 - 4 = 50 m/s."
+            },
+            {
+                id: 84,
+                category: "Modul 7: Limit & Turunan",
+                difficulty: "Sedang",
+                question: "Dari fungsi s(t) = 2t³ - 4t di atas, berapakah percepatan sesaat partikel pada detik ke-3?",
+                options: ["36 m/s²", "18 m/s²", "30 m/s²", "24 m/s²"],
+                answer: 0,
+                explanation: "Percepatan sesaat a(t) adalah turunan kedua posisi s''(t) atau turunan pertama kecepatan v'(t). v'(t) = a(t) = 12t. Pada t = 3, a(3) = 12(3) = 36 m/s²."
+            },
+            {
+                id: 85,
+                category: "Modul 7: Limit & Turunan",
+                difficulty: "Tinggi",
+                question: "Tentukan koordinat titik puncak maksimum/minimum dari fungsi kuadrat y = x² - 4x + 5.",
+                options: ["(2, 1)", "(1, 2)", "(2, 5)", "(-2, 1)"],
+                answer: 0,
+                explanation: "Titik balik ekstrim dicapai saat y' = 2x - 4 = 0 => x = 2. Nilai y = (2)² - 4(2) + 5 = 4 - 8 + 5 = 1. Koordinat puncak adalah (2, 1)."
+            },
+
+            // --- MODUL 8: APLIKASI TURUNAN (BIAYA DAN PENERIMAAN) ---
+            {
+                id: 86,
+                category: "Modul 8: Aplikasi Turunan",
+                difficulty: "Tinggi",
+                question: "Sebuah perusahaan memproduksi komoditas dengan biaya total TC = 150 + 10Q + 2Q². Tentukan fungsi Biaya Marjinal (Marginal Cost, MC) perusahaan.",
+                options: ["MC = 10 + 4Q", "MC = 150 + 10 + 4Q", "MC = 10 + 2Q", "MC = 4Q"],
+                answer: 0,
+                explanation: "Biaya Marjinal MC = dTC/dQ = d(150 + 10Q + 2Q²)/dQ = 10 + 4Q."
+            },
+            {
+                id: 87,
+                category: "Modul 8: Aplikasi Turunan",
+                difficulty: "Tinggi",
+                question: "Menggunakan fungsi TC = 150 + 10Q + 2Q², tentukan fungsi Biaya Rata-rata (Average Cost, AC) perusahaan.",
+                options: ["AC = 150/Q + 10 + 2Q", "AC = 10 + 4Q", "AC = 150/Q + 10", "AC = 150 + 10 + 2Q"],
+                answer: 0,
+                explanation: "AC = TC / Q = (150 + 10Q + 2Q²) / Q = 150/Q + 10 + 2Q."
+            },
+            {
+                id: 88,
+                category: "Modul 8: Aplikasi Turunan",
+                difficulty: "Tinggi",
+                question: "Berdasarkan fungsi TC di atas, hitunglah nilai Biaya Marjinal (MC) ketika jumlah produksi Q = 5 unit.",
+                options: ["30", "20", "40", "15"],
+                answer: 0,
+                explanation: "MC = 10 + 4Q. Pada Q = 5, MC = 10 + 4(5) = 10 + 20 = 30."
+            },
+            {
+                id: 89,
+                category: "Modul 8: Aplikasi Turunan",
+                difficulty: "Tinggi",
+                question: "Penerimaan total produsen dinyatakan oleh TR = 80Q - 3Q². Tentukan fungsi Penerimaan Marjinal (Marginal Revenue, MR) produsen.",
+                options: ["MR = 80 - 6Q", "MR = 80 - 3Q", "MR = 80Q - 6", "MR = 40 - 3Q"],
+                answer: 0,
+                explanation: "MR = dTR/dQ = d(80Q - 3Q²)/dQ = 80 - 6Q."
+            },
+            {
+                id: 90,
+                category: "Modul 8: Aplikasi Turunan",
+                difficulty: "Sedang",
+                question: "Berdasarkan fungsi TR = 80Q - 3Q², tentukan fungsi Penerimaan Rata-rata (Average Revenue, AR) yang juga merepresentasikan harga permintaan P.",
+                options: ["AR = 80 - 3Q", "AR = 80 - 6Q", "AR = 80", "AR = 40 - 3Q"],
+                answer: 0,
+                explanation: "AR = TR / Q = (80Q - 3Q²) / Q = 80 - 3Q."
+            },
+            {
+                id: 91,
+                category: "Modul 8: Aplikasi Turunan",
+                difficulty: "Tinggi",
+                question: "Bila fungsi biaya rata-rata suatu perusahaan adalah AC = Q² - 12Q + 40. Tentukan kuantitas produksi Q di mana AC mencapai nilai minimum.",
+                options: ["Q = 6", "Q = 12", "Q = 4", "Q = 8"],
+                answer: 0,
+                explanation: "AC minimum terjadi saat dAC/dQ = 2Q - 12 = 0 => 2Q = 12 => Q = 6 unit."
+            },
+            {
+                id: 92,
+                category: "Modul 8: Aplikasi Turunan",
+                difficulty: "Sedang",
+                question: "Kondisi teoretis penting dalam struktur biaya mikroekonomi menyatakan bahwa kurva MC memotong kurva AC pada saat...",
+                options: [
+                    "AC mencapai nilai minimum.",
+                    "AC mencapai nilai maksimum.",
+                    "Penerimaan total bernilai nol.",
+                    "Keuntungan produsen mencapai maksimum."
+                ],
+                answer: 0,
+                explanation: "Secara matematis, kurva Biaya Marjinal (MC) akan selalu memotong kurva Biaya Rata-rata (AC) tepat pada titik terendah (minimum) AC."
+            },
+            {
+                id: 93,
+                category: "Modul 8: Aplikasi Turunan",
+                difficulty: "Tinggi",
+                question: "Penerimaan total maksimum dari fungsi TR = 120Q - 2Q² dicapai pada tingkat penjualan Q sebesar...",
+                options: ["30 unit", "60 unit", "40 unit", "20 unit"],
+                answer: 0,
+                explanation: "TR maksimum tercapai ketika turunan pertamanya MR = dTR/dQ = 120 - 4Q = 0 => 4Q = 120 => Q = 30 unit."
+            },
+            {
+                id: 94,
+                category: "Modul 8: Aplikasi Turunan",
+                difficulty: "Sedang",
+                question: "Berapakah besarnya penerimaan total maksimum yang diperoleh pada kuantitas Q = 30 unit dari soal di atas?",
+                options: ["1.800", "3.600", "2.400", "1.200"],
+                answer: 0,
+                explanation: "TR = 120(30) - 2(30)² = 3.600 - 2(900) = 3.600 - 1.800 = 1.800."
+            },
+            {
+                id: 95,
+                category: "Modul 8: Aplikasi Turunan",
+                difficulty: "Sedang",
+                question: "Bila biaya tetap total (TFC) = 100 dan biaya variabel total (TVC) = 5Q. Berapakah nilai Biaya Marjinal (MC) perusahaan tersebut?",
+                options: ["5", "100", "105", "5Q"],
+                answer: 0,
+                explanation: "TC = TFC + TVC = 100 + 5Q. MC = dTC/dQ = 5 (biaya marjinal konstan)."
+            },
+
+            // --- MODUL 9: KESEIMBANGAN PRODUSEN DAN LABA MAKSIMUM ---
+            {
+                id: 96,
+                category: "Modul 9: Keuntungan Maksimum",
+                difficulty: "Tinggi",
+                question: "Penerimaan total produsen ditunjukkan TR = 100Q - Q² dan biaya total TC = 50 + 20Q + Q². Tentukan kuantitas produksi Q yang memaksimumkan keuntungan total.",
+                options: ["20 unit", "40 unit", "15 unit", "25 unit"],
+                answer: 0,
+                explanation: "Fungsi keuntungan π = TR - TC = (100Q - Q²) - (50 + 20Q + Q²) = -2Q² + 80Q - 50. Syarat dπ/dQ = -4Q + 80 = 0 => 4Q = 80 => Q = 20 unit."
+            },
+            {
+                id: 97,
+                category: "Modul 9: Keuntungan Maksimum",
+                difficulty: "Tinggi",
+                question: "Dari kuantitas optimal Q = 20 unit pada kasus di atas, berapakah besarnya nilai keuntungan maksimum yang diperoleh?",
+                options: ["750", "800", "700", "650"],
+                answer: 0,
+                explanation: "π = -2(20)² + 80(20) - 50 = -2(400) + 1600 - 50 = -800 + 1600 - 50 = 750."
+            },
+            {
+                id: 98,
+                category: "Modul 9: Keuntungan Maksimum",
+                difficulty: "Sedang",
+                question: "Syarat orde pertama (necessary condition) yang harus dipenuhi oleh produsen agar keuntungannya maksimum adalah...",
+                options: ["MR = MC", "TR = TC", "P = AC", "MR = 0"],
+                answer: 0,
+                explanation: "Keuntungan maksimum dicapai ketika tingkat perubahan pendapatan marjinal (MR) tepat menyamai tingkat perubahan biaya marjinal (MC)."
+            },
+            {
+                id: 99,
+                category: "Modul 9: Keuntungan Maksimum",
+                difficulty: "Tinggi",
+                question: "Seorang monopolis menghadapi fungsi permintaan P = 50 - 2Q. Tentukan fungsi Penerimaan Marjinal (MR) untuk monopolis tersebut.",
+                options: ["MR = 50 - 4Q", "MR = 50 - 2Q", "MR = 25 - Q", "MR = 100 - 4Q"],
+                answer: 0,
+                explanation: "TR = P · Q = (50 - 2Q)Q = 50Q - 2Q². Maka MR = dTR/dQ = 50 - 4Q."
+            },
+            {
+                id: 100,
+                category: "Modul 9: Keuntungan Maksimum",
+                difficulty: "Tinggi",
+                question: "Monopolis menghadapi permintaan P = 50 - 2Q dengan biaya marjinal konstan MC = 10. Tentukan harga (P) keseimbangan pasar yang dipasang oleh monopolis agar labanya maksimum.",
+                options: ["30", "40", "20", "25"],
+                answer: 0,
+                explanation: "MR = MC => 50 - 4Q = 10 => 4Q = 40 => Q = 10. Substitusikan Q = 10 ke fungsi permintaan: P = 50 - 2(10) = 50 - 20 = 30."
+            }
+        ];
+
+        // System State
+        let currentQuestionIdx = 0;
+        let userAnswers = {}; // questionIdx: optionIdx
+        let flaggedQuestions = {}; // questionIdx: boolean
+        let timeRemaining = 90 * 60; // default 90 mins
+        let timerActive = false;
+        let timerInterval = null;
+        let currentQuizMode = 'belajar'; // 'belajar' | 'ujian'
+        let durationOption = 90; // mins
+        let reviewMode = false;
+        let currentFilter = 'semua'; // 'semua' | 'belum' | 'ragu'
+
+        // DOM Elements
+        const landingView = document.getElementById('landing-view');
+        const quizView = document.getElementById('quiz-view');
+        const resultView = document.getElementById('result-view');
+        const quizStatusBar = document.getElementById('quiz-status-bar');
+
+        const timerDisplay = document.getElementById('timer-display');
+        const timerIcon = document.getElementById('timer-icon');
+        const answeredCountDisplay = document.getElementById('answered-count');
+        
+        const questionIndexTag = document.getElementById('question-index-tag');
+        const questionCategoryTag = document.getElementById('question-category-tag');
+        const questionDiffTag = document.getElementById('question-diff-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const flagBtn = document.getElementById('flag-btn');
+        
+        const gridContainer = document.getElementById('grid-container');
+        const confirmModal = document.getElementById('confirm-modal');
+        const timeoutModal = document.getElementById('timeout-modal');
+
+        // Init App Defaults
+        window.onload = function() {
+            renderGrid();
+        };
+
+        // Configuration Handlers
+        function setDuration(mins) {
+            durationOption = mins;
+            document.querySelectorAll('.dur-btn').forEach(btn => {
+                btn.className = "dur-btn py-2.5 px-1 text-center rounded-xl font-bold text-xs bg-slate-900 border border-slate-750 text-slate-400 hover:bg-slate-850 transition-all";
+            });
+            document.getElementById(`dur-${mins}`).className = "dur-btn py-2.5 px-1 text-center rounded-xl font-bold text-xs bg-indigo-600 border border-indigo-500 text-white shadow-md shadow-indigo-500/10 transition-all";
+        }
+
+        function setMode(mode) {
+            currentQuizMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.className = "mode-btn p-3 text-left rounded-xl border bg-slate-900 border-slate-750 text-slate-400 hover:bg-slate-850 transition-all";
+            });
+            document.getElementById(`mode-${mode}`).className = "mode-btn p-3 text-left rounded-xl border bg-indigo-600/10 border-indigo-500 text-white transition-all";
+        }
+
+        // Start Simulation
+        function startSimulation() {
+            // Reset States
+            currentQuestionIdx = 0;
+            userAnswers = {};
+            flaggedQuestions = {};
+            reviewMode = false;
+            explanationBox.classList.add('hidden');
+
+            // Set Timer
+            if (durationOption > 0) {
+                timeRemaining = durationOption * 60;
+                timerDisplay.innerText = formatTime(timeRemaining);
+                startTimer();
+            } else {
+                timerDisplay.innerText = "Bebas";
+                timerActive = false;
+            }
+
+            // UI view shifts
+            landingView.classList.add('hidden');
+            resultView.classList.add('hidden');
+            quizView.classList.remove('hidden');
+            quizStatusBar.classList.remove('hidden');
+
+            renderQuestion();
+            renderGrid();
+            updateProgress();
+        }
+
+        // Timer Engine
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerActive = true;
+            timerInterval = setInterval(() => {
+                if (timeRemaining > 0) {
+                    timeRemaining--;
+                    timerDisplay.innerText = formatTime(timeRemaining);
+                    
+                    // Alert critical time
+                    if (timeRemaining < 180) {
+                        timerDisplay.classList.add('text-rose-400', 'animate-pulse');
+                        timerIcon.classList.add('text-rose-400');
+                    } else {
+                        timerDisplay.classList.remove('text-rose-400', 'animate-pulse');
+                        timerIcon.classList.remove('text-rose-400');
+                    }
+                } else {
+                    clearInterval(timerInterval);
+                    timerActive = false;
+                    showTimeoutModal();
+                }
+            }, 1000);
+        }
+
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            return `${h > 0 ? h + ':' : ''}${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        // Render Current Question
+        function renderQuestion() {
+            const q = QUESTIONS[currentQuestionIdx];
+            
+            // Meta updates
+            questionIndexTag.innerText = `Soal ${currentQuestionIdx + 1} dari ${QUESTIONS.length}`;
+            questionCategoryTag.innerText = q.category;
+            questionDiffTag.innerText = q.difficulty;
+            if (q.difficulty === 'Tinggi') {
+                questionDiffTag.className = "text-[10px] uppercase tracking-wider font-extrabold px-2 py-1 rounded-md bg-rose-500/10 text-rose-400 border border-rose-500/20";
+            } else {
+                questionDiffTag.className = "text-[10px] uppercase tracking-wider font-extrabold px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+            }
+
+            questionText.innerText = q.question;
+
+            // Flag state button
+            if (flaggedQuestions[currentQuestionIdx]) {
+                flagBtn.className = "p-1.5 rounded-lg border bg-amber-500/20 border-amber-500/80 text-amber-300 transition-all";
+            } else {
+                flagBtn.className = "p-1.5 rounded-lg border bg-slate-900 border-slate-750 text-slate-400 hover:text-slate-300 transition-all";
+            }
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            const userAns = userAnswers[currentQuestionIdx];
+            const isAnswered = userAns !== undefined;
+
+            q.options.forEach((option, idx) => {
+                const isSelected = userAns === idx;
+                const isCorrect = q.answer === idx;
+                
+                let btnClass = "bg-slate-900 border-slate-750 text-slate-300 hover:bg-slate-850";
+                let statusIcon = "";
+
+                if (reviewMode || (currentQuizMode === 'belajar' && isAnswered)) {
+                    // Show correct/incorrect highlights
+                    if (isCorrect) {
+                        btnClass = "bg-emerald-500/10 border-emerald-500 text-emerald-300 shadow-md shadow-emerald-500/5 cursor-default";
+                        statusIcon = `<svg class="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+                    } else if (isSelected) {
+                        btnClass = "bg-rose-500/10 border-rose-500 text-rose-300 cursor-default";
+                        statusIcon = `<svg class="h-5 w-5 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+                    } else {
+                        btnClass = "bg-slate-900/40 border-slate-750/50 text-slate-500 cursor-default";
+                    }
+                } else {
+                    // Normal test states
+                    if (isSelected) {
+                        btnClass = "bg-indigo-600/20 border-indigo-500 text-indigo-200 shadow-md shadow-indigo-500/5";
+                    }
+                }
+
+                const optLetter = String.fromCharCode(65 + idx);
+                const button = document.createElement('button');
+                button.className = `w-full p-4 rounded-2xl border text-left font-semibold text-xs sm:text-sm transition-all flex items-center justify-between gap-4 ${btnClass}`;
+                button.onclick = () => selectOption(idx);
+                button.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 h-6 rounded-lg text-xs flex items-center justify-center font-bold border shrink-0 ${isSelected ? 'bg-indigo-500 text-white border-indigo-400' : 'bg-slate-800 border-slate-700 text-slate-400'}">${optLetter}</span>
+                        <span>${option}</span>
+                    </div>
+                    ${statusIcon}
+                `;
+                optionsContainer.appendChild(button);
+            });
+
+            // Handle Explanations Visbility
+            if (reviewMode || (currentQuizMode === 'belajar' && isAnswered)) {
+                explanationText.innerText = q.explanation;
+                explanationBox.classList.remove('hidden');
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Adjust buttons active states
+            prevBtn.disabled = currentQuestionIdx === 0;
+            if (currentQuestionIdx === QUESTIONS.length - 1) {
+                nextBtn.innerHTML = `Selesaikan Kuis`;
+                nextBtn.className = "px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs sm:text-sm rounded-xl font-bold flex items-center gap-1.5 transition-all";
+                nextBtn.onclick = showSubmitConfirmModal;
+            } else {
+                nextBtn.innerHTML = `Berikutnya <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>`;
+                nextBtn.className = "px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm rounded-xl font-bold flex items-center gap-1.5 transition-all";
+                nextBtn.onclick = nextQuestion;
+            }
+        }
+
+        function selectOption(optionIdx) {
+            // Read-only during reviews or once answered in learning mode
+            if (reviewMode) return;
+            if (currentQuizMode === 'belajar' && userAnswers[currentQuestionIdx] !== undefined) return;
+
+            userAnswers[currentQuestionIdx] = optionIdx;
+            
+            // Update UI count
+            const totalAnswered = Object.keys(userAnswers).length;
+            answeredCountDisplay.innerText = totalAnswered;
+
+            renderQuestion();
+            renderGrid();
+            updateProgress();
+        }
+
+        function toggleFlag() {
+            if (reviewMode) return;
+            flaggedQuestions[currentQuestionIdx] = !flaggedQuestions[currentQuestionIdx];
+            renderQuestion();
+            renderGrid();
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIdx < QUESTIONS.length - 1) {
+                currentQuestionIdx++;
+                renderQuestion();
+                renderGrid();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIdx > 0) {
+                currentQuestionIdx--;
+                renderQuestion();
+                renderGrid();
+            }
+        }
+
+        function updateProgress() {
+            const pct = ((currentQuestionIdx + 1) / QUESTIONS.length) * 100;
+            document.getElementById('progress-indicator').style.width = `${pct}%`;
+        }
+
+        // Render Sidebar Grids
+        function renderGrid() {
+            gridContainer.innerHTML = '';
+            
+            QUESTIONS.forEach((q, idx) => {
+                const isSelected = currentQuestionIdx === idx;
+                const isAnswered = userAnswers[idx] !== undefined;
+                const isFlagged = flaggedQuestions[idx];
+                const isCorrect = userAnswers[idx] === q.answer;
+
+                // Category filtering
+                if (currentFilter === 'belum' && isAnswered) return;
+                if (currentFilter === 'ragu' && !isFlagged) return;
+
+                let gridClass = "bg-slate-900 border-slate-750 text-slate-400";
+                
+                if (reviewMode || (currentQuizMode === 'belajar' && isAnswered)) {
+                    // Review performance colors
+                    if (isAnswered) {
+                        gridClass = isCorrect 
+                            ? "bg-emerald-600/20 border-emerald-500 text-emerald-400 font-semibold"
+                            : "bg-rose-600/20 border-rose-500 text-rose-400 font-semibold";
+                    }
+                } else {
+                    // Standard exam progress colors
+                    if (isAnswered) {
+                        gridClass = "bg-indigo-600/20 border-indigo-500 text-indigo-300 font-semibold";
+                    } else if (isFlagged) {
+                        gridClass = "bg-amber-500/20 border-amber-500 text-amber-300 font-semibold";
+                    }
+                }
+
+                if (isSelected) {
+                    gridClass += " ring-2 ring-indigo-500 ring-offset-2 ring-offset-slate-900 border-indigo-400 scale-[1.08] font-black text-white";
+                }
+
+                const cell = document.createElement('button');
+                cell.className = `aspect-square text-[11px] rounded-xl border flex items-center justify-center transition-all ${gridClass}`;
+                cell.innerText = idx + 1;
+                cell.onclick = () => {
+                    currentQuestionIdx = idx;
+                    renderQuestion();
+                    renderGrid();
+                };
+                gridContainer.appendChild(cell);
+            });
+        }
+
+        function setGridFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('[id^="filter-"]').forEach(btn => {
+                btn.className = "py-1 text-[10px] font-bold rounded-lg transition-all capitalize text-slate-400 hover:text-slate-200";
+            });
+            document.getElementById(`filter-${filter}`).className = "py-1 text-[10px] font-bold rounded-lg transition-all capitalize bg-slate-850 text-indigo-400 border border-slate-700/80 shadow";
+            renderGrid();
+        }
+
+        // Modals Operations
+        function showSubmitConfirmModal() {
+            confirmModal.classList.remove('hidden');
+        }
+
+        function closeSubmitConfirmModal() {
+            confirmModal.classList.add('hidden');
+        }
+
+        function showTimeoutModal() {
+            timeoutModal.classList.remove('hidden');
+        }
+
+        function handleTimeoutFinish() {
+            timeoutModal.classList.add('hidden');
+            calculateResults();
+        }
+
+        function submitExam() {
+            closeSubmitConfirmModal();
+            if (timerInterval) clearInterval(timerInterval);
+            calculateResults();
+        }
+
+        // Calculate and Show Results
+        function calculateResults() {
+            let correct = 0;
+            let incorrect = 0;
+            let unanswered = 0;
+
+            // Per category metrics
+            const categoryMetrics = {};
+
+            QUESTIONS.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+
+                if (!categoryMetrics[q.category]) {
+                    categoryMetrics[q.category] = { total: 0, correct: 0 };
+                }
+                categoryMetrics[q.category].total++;
+
+                if (userAns === undefined) {
+                    unanswered++;
+                } else if (userAns === q.answer) {
+                    correct++;
+                    categoryMetrics[q.category].correct++;
+                } else {
+                    incorrect++;
+                }
+            });
+
+            // Main Score Percent
+            const percent = Math.round((correct / QUESTIONS.length) * 100);
+            document.getElementById('final-score').innerText = `${percent}%`;
+
+            // UT grading standards
+            const gradeBadge = document.getElementById('pass-fail-badge');
+            if (percent >= 85) {
+                gradeBadge.innerText = "LULUS (GRADE UT: A)";
+                gradeBadge.className = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-4 py-1.5 rounded-full font-bold inline-block";
+            } else if (percent >= 70) {
+                gradeBadge.innerText = "LULUS (GRADE UT: B)";
+                gradeBadge.className = "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs px-4 py-1.5 rounded-full font-bold inline-block";
+            } else if (percent >= 55) {
+                gradeBadge.innerText = "LULUS (GRADE UT: C)";
+                gradeBadge.className = "bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-4 py-1.5 rounded-full font-bold inline-block";
+            } else {
+                gradeBadge.innerText = "BELUM LULUS (GRADE UT: D/E)";
+                gradeBadge.className = "bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xs px-4 py-1.5 rounded-full font-bold inline-block";
+            }
+
+            document.getElementById('summary-correct').innerText = correct;
+            document.getElementById('summary-incorrect').innerText = incorrect;
+            document.getElementById('summary-unanswered').innerText = unanswered;
+
+            // Generate Module Analysis Visuals
+            const container = document.getElementById('category-analysis-container');
+            container.innerHTML = '';
+            
+            Object.entries(categoryMetrics).forEach(([cat, stats]) => {
+                const catPercent = Math.round((stats.correct / stats.total) * 100);
+                
+                let barColor = "bg-rose-500";
+                if (catPercent >= 80) barColor = "bg-emerald-500";
+                else if (catPercent >= 55) barColor = "bg-indigo-500";
+
+                const segment = document.createElement('div');
+                segment.className = "space-y-1.5";
+                segment.innerHTML = `
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-semibold text-slate-200">${cat}</span>
+                        <span class="text-slate-400 font-medium">
+                            ${stats.correct}/${stats.total} Benar (${catPercent}%)
+                        </span>
+                    </div>
+                    <div class="h-2 w-full bg-slate-900 rounded-full overflow-hidden">
+                        <div class="h-full ${barColor} rounded-full transition-all duration-500" style="width: ${catPercent}%"></div>
+                    </div>
+                `;
+                container.appendChild(segment);
+            });
+
+            // View shifts
+            quizView.classList.add('hidden');
+            quizStatusBar.classList.add('hidden');
+            resultView.classList.remove('hidden');
+        }
+
+        // Review & Restart Operations
+        function startReview() {
+            reviewMode = true;
+            currentQuestionIdx = 0;
+            
+            resultView.classList.add('hidden');
+            quizView.classList.remove('hidden');
+            quizStatusBar.classList.remove('hidden');
+
+            renderQuestion();
+            renderGrid();
+        }
+
+        function restartSimulation() {
+            resultView.classList.add('hidden');
+            landingView.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
+
+```
